@@ -6,6 +6,21 @@ import { ethers } from "ethers"
 import nftMarketplaceAbi from "../../constants/NftMarketplace.json"
 import nftAbi from "../../constants/BasicNft.json"
 
+const truncateStr = (fullStr, strLen) => {
+    if (fullStr <= strLen) return
+
+    const separator = "..."
+    const separatorLen = separator.length
+    const charsToShow = strLen - separatorLen
+    const frontChars = Math.ceil(charsToShow / 2)
+    const backChars = Math.floor(charsToShow / 2)
+    return (
+        fullStr.substring(0, frontChars) +
+        separator +
+        fullStr.substring(fullStr.length - backChars)
+    )
+}
+
 export default function NFTBox({ price, nftAddress, tokenId, marketplaceAddress, seller }) {
     const [imageURI, setImageURI] = useState("")
     const [tokenName, setTokenName] = useState("")
@@ -45,6 +60,9 @@ export default function NFTBox({ price, nftAddress, tokenId, marketplaceAddress,
         }
     }, [isWeb3Enabled])
 
+    const isOwnedByUser = seller === account || seller === undefined
+    const formattedSellerAddress = isOwnedByUser ? "You" : truncateStr(seller || "", 15)
+
     return (
         <div>
             <div className="mr-5 mb-5">
@@ -53,12 +71,15 @@ export default function NFTBox({ price, nftAddress, tokenId, marketplaceAddress,
                         <div className="p-2">
                             <div className="flex flex-col items-end gap-2">
                                 <div>#{tokenId}</div>
-                                <div className="italic text-sm">Owned by {seller}</div>
+                                <div className="italic text-sm">
+                                    Owned by {formattedSellerAddress}
+                                </div>
                                 <Image
                                     loader={() => imageURI}
                                     src={imageURI}
                                     height="200"
                                     width="200"
+                                    alt=""
                                 />
                                 <div className="font-bold">
                                     {ethers.utils.formatUnits(price, "ether")} ETH
