@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { useMoralis } from "react-moralis"
 import networkMapping from "../../constants/networkMapping.json"
 import GET_ACTIVE_ITEMS from "../../constants/subgraphQueries"

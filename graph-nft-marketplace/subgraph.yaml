@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0xC27722fa6B6daC70d8FEDE46945a0861bAA7139b"
       abi: NftMarketplace
-      startBlock: 8900080
+      startBlock: 8900079 # start sarching from this block
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
